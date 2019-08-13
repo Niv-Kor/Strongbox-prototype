@@ -4,7 +4,7 @@ import ChatWindow
 import Protocol
 
 
-user = UserProfile.UserProfile('Niv', '10.100.102.8', 40022)
+user = UserProfile.UserProfile('Alice', '10.100.102.8', 40022)
 controller = ChatController.ChatController(user)
 protocol = Protocol.Protocol()
 window = ChatWindow.ChatWindow()

@@ -37,7 +37,9 @@ class ChatController:
                 # encrypted message from other client
                 else:
                     msg = Composer.decompose(msg, self.profile)
-                    if msg != '':
+
+                    # message is not empty
+                    if msg[len(msg) - 1] != ':':
                         self.window.append(msg)
 
                     self.profile.door.regenerate()

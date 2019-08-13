@@ -19,8 +19,27 @@ def decompose(msg, profile):
 
 # Convert a string representation of encrypted data back to a list
 def _stringToList(string):
-    encryptedNum = str(string[2:string.rfind('\'')])
-    n = int(string[string.index('(') + 1:string.rfind(',')])
-    e = int(string[string.rfind(',') + 2:string.rfind(')')])
-    name = str(string[string.rfind(',') + 3:string.rfind('\'')])
+    print 'received', string
+
+    encryptedNum = str(string[_nthIndex(string, '\'', 0) + 1:_nthIndex(string, '\'', 1)])
+    print 'encrypted number:', encryptedNum
+
+    n = int(string[_nthIndex(string, '(', 0) + 1:_nthIndex(string, ',', 1)])
+    print 'n:', n
+
+    e = int(string[_nthIndex(string, ',', 1) + 2:_nthIndex(string, ')', 0)])
+    print 'e:', e
+
+    name = str(string[_nthIndex(string, '\'', 2) + 1:_nthIndex(string, '\'', 3)])
+    print 'name:', name
+
     return [encryptedNum, (n, e), name]
+
+
+def _nthIndex(string, substring, n):
+    parts = string.split(substring, n + 1)
+
+    if len(parts) <= n + 1:
+        return -1
+    else:
+        return len(string) - len(parts[-1]) - len(substring)
