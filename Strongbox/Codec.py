@@ -5,8 +5,9 @@ import NumeralHandler as nums
 def encode(secret):
     decimalList = []
 
-    for i in secret:
-        decimalList.append(nums.zeroPadding(ord(i), 3))
+    if secret != '':
+        for i in secret:
+            decimalList.append(nums.zeroPadding(ord(i), 3))
 
     return decimalList
 
@@ -16,7 +17,6 @@ def decode(secret):
     charString = ''
 
     for i in secret:
-        print 'i is', i
         charString += chr(int(i))
 
     return charString

@@ -13,8 +13,7 @@ def encrypt(secret, trapdoor):
 
     # encrypt all items in secret
     for i in range(len(secret)):
-        print 'secret is type:', type(secret)
-        secret[i] = (int(secret[i]) ** trapdoor.decryptorKey[1]) % trapdoor.decryptorKey[0]
+        secret[i] = (int(secret[i]) ** trapdoor.decrypterKey[1]) % trapdoor.decrypterKey[0]
         mDigits = nums.countDigits(int(secret[i]))
         if mDigits > maxDigits:
             maxDigits = mDigits
