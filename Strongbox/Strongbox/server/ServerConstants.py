@@ -1,0 +1,9 @@
+APP_NAME = 'RSA Encrypted Chatter'
+HOST = '10.100.102.8'
+PORT = 22300
+BUFFER_SIZE = 2048
+BACKLOG = 2
+DECODER = 'utf8'
+QUIT_MESSAGE = '/quit'
+HEADER_MESSAGE = '/header '
+WELCOME_MESSAGE = 'Welcome to ' + APP_NAME + '!\n'
