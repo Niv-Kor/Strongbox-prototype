@@ -6,7 +6,7 @@ def encode(secret):
     decimalList = []
 
     for i in secret:
-        decimalList.append(Strongbox.util.NumeralHandler.zeroPadding(ord(i), 3))
+        decimalList.append(nums.zeroPadding(ord(i), 3))
 
     return decimalList
 

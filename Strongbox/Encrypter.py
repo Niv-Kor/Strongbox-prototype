@@ -1,5 +1,5 @@
-import Strongbox.util.NumeralHandler as nums
-import Strongbox.Strongbox.encryption.Codec
+import NumeralHandler as nums
+import Codec
 
 
 # Take a string and create a new list with the encrypted data.
@@ -8,13 +8,14 @@ import Strongbox.Strongbox.encryption.Codec
 # The second item of the list is a tuple (n, e), which is used as the RSA public key.
 # These values are later needed for encrypting the next received message.
 def encrypt(secret, trapdoor):
-    secret = Strongbox.Strongbox.encryption.Codec.encode(secret)
+    secret = Codec.encode(secret)
     string = ''
     maxDigits = 1
     encList = []
 
     # encrypt all items in secret
     for i in range(len(secret)):
+        print 'secret is type:', type(secret)
         secret[i] = (int(secret[i]) ** trapdoor.decryptorKey[1]) % trapdoor.decryptorKey[0]
         mDigits = nums.countDigits(int(secret[i]))
         if mDigits > maxDigits:
@@ -58,7 +59,7 @@ def decrypt(secret, trapdoor):
     for i in range(len(decList)):
         decList[i] = (int(decList[i]) ** trapdoor.d) % trapdoor.n
 
-    return Strongbox.Strongbox.encryption.Codec.decode(decList)
+    return Codec.decode(decList)
 
 
 # Convert a string representation of encrypted data back to a list

@@ -1,6 +1,6 @@
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
-import Strongbox.Strongbox.server.ServerConstants as const
+import ServerConstants as const
 
 
 ADDRESS = (const.HOST, const.PORT)

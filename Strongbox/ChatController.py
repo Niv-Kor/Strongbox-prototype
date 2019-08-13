@@ -1,6 +1,7 @@
 from threading import Thread
-from Strongbox.server import ServerConstants as servconst
-from Strongbox.encryption import Encrypter, Codec
+import ServerConstants as servconst
+import Encrypter
+import Codec
 
 
 class ChatController:
@@ -54,16 +55,10 @@ class ChatController:
             self.window.close()
         # client sends a legal message
         else:
-            '''TEMP DEMO'''
-            self.profile.door.setDecryptorKey(self.partner.door.getPublicKey())
-
             msg = Encrypter.encrypt(msg, self.profile.door)
             self.protocol.send(msg)
 
         self.window.clearBuffer()
-
-        '''TEMP DEMO'''
-        self.partner.door.regenerate()
 
     # send the other client an opening signal, containing my public key.
     # if someone gets this message, it means that the chat includes two participants.

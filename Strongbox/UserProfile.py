@@ -1,4 +1,4 @@
-from Strongbox.user import TrapDoor
+import TrapDoor
 
 
 class UserProfile:

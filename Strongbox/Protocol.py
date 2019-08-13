@@ -1,6 +1,6 @@
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
-import Strongbox.server.ServerConstants as servconst
+import ServerConstants as servconst
 
 
 class Protocol:
