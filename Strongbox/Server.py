@@ -1,5 +1,6 @@
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
+import StringHandler as sthand
 import ServerConstants as const
 
 
@@ -38,6 +39,10 @@ def handleClient(client):
     # broadcast(client, bytes(msg))
     clients[client] = 'Someone'
 
+    # for some reason the client needs to receive a first dummy message
+    # in order to be capable of receiving the next messages
+    client.send(bytes('<CLIENT IGNITE MESSAGE>'))
+
     while True:
         msg = client.recv(const.BUFFER_SIZE)
 
@@ -48,7 +53,7 @@ def handleClient(client):
             broadcast(client, 'Someone' + ' has left the chat.')
             break
         # received header message
-        elif msg.startswith(const.HEADER_MESSAGE):
+        elif _isHeader(msg):
             broadcast(client, msg)
         # received encrypted message
         else:
@@ -61,8 +66,11 @@ def broadcast(sender, msg, prefix=''):
     for sock in clients:
         if sock != sender:
             sock.send(bytes(prefix + msg))
-            sock.send(bytes(prefix + msg))
-            print 'sent', bytes(prefix + msg), 'to', sock
+
+
+def _isHeader(msg):
+    encryptedNum = str(msg[sthand.nthIndex(msg, '\'', 0) + 1:sthand.nthIndex(msg, '\'', 1)])
+    return encryptedNum == ''
 
 
 SERVER.listen(const.BACKLOG)

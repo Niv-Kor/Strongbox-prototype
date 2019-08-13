@@ -45,7 +45,6 @@ class ChatWindow:
         self.msgList.insert(tkinter.END, message)
 
     def clearBuffer(self):
-        print 'clearing'
         self.msgBuffer.set('')
 
     def close(self):

@@ -13,7 +13,7 @@ def encrypt(secret, trapdoor):
 
     # encrypt all items in secret
     for i in range(len(secret)):
-        secret[i] = (int(secret[i]) ** trapdoor.decrypterKey[1]) % trapdoor.decrypterKey[0]
+        secret[i] = (int(secret[i]) ** trapdoor.encrypterKey[1]) % trapdoor.encrypterKey[0]
         mDigits = nums.countDigits(int(secret[i]))
         if mDigits > maxDigits:
             maxDigits = mDigits
@@ -45,7 +45,7 @@ def decrypt(secret, trapdoor):
 
         # create a list of encrypted integers, using the first item in secret
         for i in range(3, len(secret[0]), blockSize):
-            block = secret[0][i:i + blockSize:]
+            block = secret[0][i:i + blockSize]
             decList.append(block)
 
         # decrypt the integers back to normal using the decryptor key

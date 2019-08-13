@@ -29,6 +29,7 @@ class ChatController:
         while True:
             print 'waiting for data'
             msg = self.protocol.receive()
+            print 'received', msg
 
             if not type(msg) is None:
                 # welcome message from server
@@ -39,10 +40,11 @@ class ChatController:
                     msg = Composer.decompose(msg, self.profile)
 
                     # message is not empty
-                    if msg[len(msg) - 1] != ':':
+                    if msg[len(msg) - 2] != ':' or msg.count(':') > 1:
                         self.window.append(msg)
 
                     self.profile.door.regenerate()
+                    self.send('')
             else:  # client has possibly left the chat
                 break
 

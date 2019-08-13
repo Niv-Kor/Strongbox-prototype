@@ -4,7 +4,7 @@ import random
 
 class TrapDoor(object):
     def __init__(self):
-        self.decrypterKey = None
+        self.encrypterKey = None
         self.p = (0, 0)
         self.phi = 0
         self.n = 0
@@ -69,8 +69,8 @@ class TrapDoor(object):
 
         return e
 
-    def setDecrypterKey(self, decKey):
-        self.decrypterKey = decKey
+    def setEncrypterKey(self, encKey):
+        self.encrypterKey = encKey
 
     def getPublicKey(self):
         return self.n, self.e
