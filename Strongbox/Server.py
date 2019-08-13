@@ -15,7 +15,7 @@ addresses = {}
 def accept():
     while True:
         (client, clientAddress) = SERVER.accept()
-        print '>>>', clientAddress, 'has connected.'
+        print '>>>', clientAddress, 'has connected. socket', client
 
         welcomeMessage = const.WELCOME_MESSAGE
 
@@ -25,21 +25,17 @@ def accept():
             welcomeMessage += 'You are here with another person. Start talking!'
 
         '''TEMP DEMO'''
-        client.send(bytes(welcomeMessage))
+        # client.send(bytes(welcomeMessage))
 
         addresses[client] = clientAddress
         handlingThread = Thread(target=handleClient, args=(client,))
         handlingThread.start()
 
 
-def stam():
-    print 'some stam'
-
-
 # Handle a single client connection
 def handleClient(client):
     msg = '>>> ', client, 'has joined the chat!'
-    broadcast(client, bytes(msg))
+    # broadcast(client, bytes(msg))
     clients[client] = 'Someone'
 
     while True:
@@ -52,7 +48,7 @@ def handleClient(client):
             broadcast(client, 'Someone' + ' has left the chat.')
             break
         # received header message
-        elif msg == const.HEADER_MESSAGE:
+        elif msg.startswith(const.HEADER_MESSAGE):
             broadcast(client, msg)
         # received encrypted message
         else:
@@ -61,9 +57,11 @@ def handleClient(client):
 
 # Broadcast a message to all connected clients
 def broadcast(sender, msg, prefix=''):
+    print 'going to send', msg
     for sock in clients:
         if sock != sender:
             sock.send(bytes(prefix + msg))
+            print 'sent', bytes(prefix + msg), 'to', sock
 
 
 SERVER.listen(const.BACKLOG)
