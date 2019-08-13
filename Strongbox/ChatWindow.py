@@ -33,7 +33,7 @@ class ChatWindow:
                                          command=self.bufferSend)
 
         self.sendButton.pack()
-        self.window.protocol('WM_DELETE_WINDOW', self.controller.closeChat())
+        self.window.protocol('WM_DELETE_WINDOW', self.controller.closeChat)
 
     def bufferSend(self):
         self.controller.bufferSend(self.msgBuffer)

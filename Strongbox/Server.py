@@ -52,7 +52,7 @@ def handleClient(client):
             broadcast(client, msg)
         # received encrypted message
         else:
-            broadcast(client, msg, 'Someone' + ': ')
+            broadcast(client, msg)
 
 
 # Broadcast a message to all connected clients
@@ -60,6 +60,7 @@ def broadcast(sender, msg, prefix=''):
     print 'going to send', msg
     for sock in clients:
         if sock != sender:
+            sock.send(bytes(prefix + msg))
             sock.send(bytes(prefix + msg))
             print 'sent', bytes(prefix + msg), 'to', sock
 

@@ -1,7 +1,7 @@
 from threading import Thread
 import ServerConstants as servconst
-import Encrypter
 import Codec
+import Composer
 
 
 class ChatController:
@@ -19,32 +19,28 @@ class ChatController:
         receiveThread = Thread(target=self.receive)
         receiveThread.start()
 
-        self._headerSend()
+        headerMsg = ['', self.profile.door.getPublicKey(), self.profile.name]
+        self.protocol.send(headerMsg)
+
         self.window.run()
 
     # receive a message from either the server or the other client
     def receive(self):
         while True:
+            print 'waiting for data'
             msg = self.protocol.receive()
 
             if not type(msg) is None:
-                # header signal from the other client
-                # contains the relevant public key
-                if msg.startswith(servconst.HEADER_MESSAGE):
-                    # store the partner's name, and his public key as my encryptor key
-                    headerInfo = self._extractHeader(msg)
-                    self.partner.name = headerInfo[0]
-                    self.profile.door.setEncryptorKey(headerInfo[1])
+                # welcome message from server
+                if msg.startswith(servconst.WELCOME_MESSAGE):
+                    self.window.append(msg)
+                # encrypted message from other client
                 else:
-                    # welcome message from server
-                    if msg.startswith(servconst.WELCOME_MESSAGE):
+                    msg = Composer.decompose(msg, self.profile)
+                    if msg != '':
                         self.window.append(msg)
-                    # encrypted message from other client
-                    else:
-                        msg = Encrypter.decrypt(msg, self.profile.door)
-                        self.window.append(str(self.partner.name) + ': ' + msg)
-                        self.profile.door.regenerate()
-                        self._headerSend()
+
+                    self.profile.door.regenerate()
             else:  # client has possibly left the chat
                 break
 
@@ -55,21 +51,10 @@ class ChatController:
             self.window.close()
         # client sends a legal message
         else:
-            msg = Encrypter.encrypt(msg, self.profile.door)
+            msg = Composer.compose(msg, self.profile)
             self.protocol.send(msg)
 
         self.window.clearBuffer()
-
-    # send the other client an opening signal, containing my public key.
-    # if someone gets this message, it means that the chat includes two participants.
-    # only the one getting this message is applicable of sending the next message.
-    def _headerSend(self):
-        name = self.profile.name
-        publicKey = self.profile.door.getPublicKey()
-        message = [name, publicKey]
-        self.protocol.send(servconst.HEADER_MESSAGE + str(message))
-
-        print 'sent', servconst.HEADER_MESSAGE + str(message)
 
     # Send a message to the other client using the send button
     def bufferSend(self, msgBuffer):
@@ -84,16 +69,3 @@ class ChatController:
 
     def closeChat(self):
         self.protocol.send(servconst.QUIT_MESSAGE)
-
-    def _extractHeader(self, message):
-        message = message[message.index(servconst.HEADER_MESSAGE):]
-        message = message[len(servconst.HEADER_MESSAGE) + 1:]
-
-        name = message[:message.index(',')]
-        keyString = message[message.index(',') + 2:]
-        n = int(keyString[1:keyString.index(',')])
-        e = int(keyString[keyString.index(',') + 2:len(keyString) - 1])
-        publicKey = (n, e)
-
-        header = [name, publicKey]
-        return header

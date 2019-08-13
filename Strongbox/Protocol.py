@@ -29,11 +29,12 @@ class Protocol:
         try:
             self.clientSocket.send(bytes(msg))
         except (IOError, AttributeError):
-            pass
+            print 'Could not send the message:', msg
 
     # receive a message from either the server or the other client
     def receive(self):
         try:
             return self.clientSocket.recv(servconst.BUFFER_SIZE).decode(servconst.DECODER)
         except OSError:
+            print 'OSError receiving'
             return ''

@@ -1,5 +1,5 @@
-APP_NAME = 'RSA Encrypted Chatter'
-HOST = '10.100.102.8'
+APP_NAME = 'Strongbox'
+HOST = '10.100.102.3'
 PORT = 22300
 BUFFER_SIZE = 2048
 BACKLOG = 2
