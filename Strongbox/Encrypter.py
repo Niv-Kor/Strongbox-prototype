@@ -11,24 +11,24 @@ def encrypt(secret, trapdoor):
     maxDigits = 1
     encList = []
 
-    # encrypt all items in secret
-    for i in range(len(secret)):
-        secret[i] = (int(secret[i]) ** trapdoor.encrypterKey[1]) % trapdoor.encrypterKey[0]
-        mDigits = nums.countDigits(int(secret[i]))
-        if mDigits > maxDigits:
-            maxDigits = mDigits
+    if secret != '':
+        # encrypt all items in secret
+        for i in range(len(secret)):
+            secret[i] = (int(secret[i]) ** trapdoor.encrypterKey[1]) % trapdoor.encrypterKey[0]
+            mDigits = nums.countDigits(int(secret[i]))
+            if mDigits > maxDigits:
+                maxDigits = mDigits
 
-    # concat all encrypted items into a string
-    for i in range(len(secret)):
-        m = nums.zeroPadding(secret[i], maxDigits)
-        string += m
+        # concat all encrypted items into a string
+        for i in range(len(secret)):
+            m = nums.zeroPadding(secret[i], maxDigits)
+            string += m
 
-    # insert header info
-    string = nums.zeroPadding(maxDigits, 3) + string
-    encList.append(string)
+        # insert header info
+        string = nums.zeroPadding(maxDigits, 3) + string
+        encList.append(string)
 
     # insert new public key
-    trapdoor.regenerate()
     encList.append(trapdoor.getPublicKey())
 
     return encList

@@ -52,20 +52,16 @@ def handleClient(client):
             del clients[client]
             broadcast(client, 'Someone' + ' has left the chat.')
             break
-        # received header message
-        elif _isHeader(msg):
-            broadcast(client, msg)
-        # received encrypted message
         else:
             broadcast(client, msg)
 
 
 # Broadcast a message to all connected clients
-def broadcast(sender, msg, prefix=''):
-    print 'going to send', msg
+def broadcast(sender, msg):
+    print 'sending', msg
     for sock in clients:
         if sock != sender:
-            sock.send(bytes(prefix + msg))
+            sock.send(bytes(msg))
 
 
 def _isHeader(msg):

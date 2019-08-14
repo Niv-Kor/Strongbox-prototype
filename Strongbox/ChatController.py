@@ -31,20 +31,19 @@ class ChatController:
             msg = self.protocol.receive()
             print 'received', msg
 
-            if not type(msg) is None:
+            if not type(msg) is None and not msg == servconst.QUIT_MESSAGE:
                 # welcome message from server
                 if msg.startswith(servconst.WELCOME_MESSAGE):
                     self.window.append(msg)
                 # encrypted message from other client
                 else:
                     msg = Composer.decompose(msg, self.profile)
+                    self.profile.door.regenerate()
 
                     # message is not empty
                     if msg[len(msg) - 2] != ':' or msg.count(':') > 1:
                         self.window.append(msg)
-
-                    self.profile.door.regenerate()
-                    self.send('')
+                        self.send('')
             else:  # client has possibly left the chat
                 break
 
@@ -72,4 +71,4 @@ class ChatController:
             self.window.clearBuffer()
 
     def closeChat(self):
-        self.protocol.send(servconst.QUIT_MESSAGE)
+        self.send(servconst.QUIT_MESSAGE)
