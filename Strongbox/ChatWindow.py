@@ -43,8 +43,10 @@ class ChatWindow:
         self.msgBuffer.set('')
 
     def enableButton(self, enable):
-        switch = {True:tk.NORMAL, False:tk.DISABLED}
-        self.sendButton.x.config(state=switch[enable])
+        switch = {True: tk.NORMAL, False: tk.DISABLED}
+        buttonState = switch[enable]
+        self.sendButton.config(state=buttonState)
+        self.entryField.config(state=buttonState)
 
     def close(self):
         self.window.quit()
