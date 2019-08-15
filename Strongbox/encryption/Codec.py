@@ -1,4 +1,4 @@
-import NumeralHandler as nums
+import Strongbox.util.NumeralHandler as nums
 
 
 # Convert a string to a list, having the integer value of each character as an item

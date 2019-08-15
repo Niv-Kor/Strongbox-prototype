@@ -1,4 +1,4 @@
-import ServerConstants as servconst
+from Strongbox.server import ServerConstants as servconst
 
 
 # Check if a message is a header, which contains an empty string with crucial encryption info

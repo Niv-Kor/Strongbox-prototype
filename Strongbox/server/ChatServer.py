@@ -1,6 +1,6 @@
 import ServerConstants as servconst
 from threading import Thread
-import MessageConverter as mesconv
+import Strongbox.util.MessageConverter as mesconv
 
 
 class ChatServer:
@@ -30,6 +30,7 @@ class ChatServer:
     def handleClient(self, client):
         while True:
             msg = client.recv(servconst.BUFFER_SIZE)
+            print 'handle received:', msg
 
             # received a header message from the client
             # containing his opening public key
@@ -45,8 +46,11 @@ class ChatServer:
                 self.broadcast(client, msg[len(servconst.HEADER_REQUEST_MESSAGE):])
             # received quit message
             elif msg == servconst.QUIT_MESSAGE:
-                self.kick(client)
+                print 'here1'
                 self.broadcast(client, str(self.clients[client]) + ' has left the chat.')
+                print 'here2'
+                self.kick(client)
+                print 'here3'
                 break
             else:
                 self.broadcast(client, msg)

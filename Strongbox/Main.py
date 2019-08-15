@@ -1,5 +1,5 @@
-from Protocol import Protocol
-from MainWindow import MainWindow
+from Strongbox.server.Protocol import Protocol
+from Strongbox.view.MainWindow import MainWindow
 
 
 protocol = Protocol()

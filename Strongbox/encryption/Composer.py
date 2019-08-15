@@ -1,4 +1,4 @@
-import MessageConverter as mesconv
+import Strongbox.util.MessageConverter as mesconv
 import Codec
 import Encrypter
 

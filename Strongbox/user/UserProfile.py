@@ -1,4 +1,4 @@
-import TrapDoor
+from Strongbox.encryption import TrapDoor
 
 
 class UserProfile:

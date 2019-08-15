@@ -1,4 +1,4 @@
-import ServerConstants as servconst
+from Strongbox.server import ServerConstants as servconst
 import tkinter as tk
 
 
@@ -49,5 +49,4 @@ class ChatWindow:
         self.entryField.config(state=buttonState)
 
     def close(self):
-        self.window.quit()
         self.window.destroy()

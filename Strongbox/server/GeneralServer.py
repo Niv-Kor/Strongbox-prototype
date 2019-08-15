@@ -1,6 +1,6 @@
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
-import MessageConverter as mesconv
+import Strongbox.util.MessageConverter as mesconv
 import ServerConstants as servconst
 from ChatServer import ChatServer
 

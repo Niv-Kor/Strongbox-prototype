@@ -1,4 +1,4 @@
-import NumeralHandler as nums
+import Strongbox.util.NumeralHandler as nums
 
 
 # Take a string and create a new list with the encrypted data.

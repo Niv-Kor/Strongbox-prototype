@@ -1,9 +1,9 @@
-import ServerConstants as servconst
+from Strongbox.server import ServerConstants as servconst
 from PIL import Image, ImageTk
-from ChatWindow import ChatWindow
-from UserProfile import UserProfile as user
-from ChatController import ChatController
-import MessageConverter as mesconv
+from Strongbox.view.ChatWindow import ChatWindow
+from Strongbox.user.UserProfile import UserProfile as user
+from Strongbox.control.ChatController import ChatController
+import Strongbox.util.MessageConverter as mesconv
 import tkinter as tk
 
 
@@ -23,7 +23,7 @@ class MainWindow:
         self.window.geometry('{}x{}+{}+{}'.format(winWidth, winHeight, xPos, yPos))
 
         # logo
-        logo = ImageTk.PhotoImage(Image.open('logo.png'))
+        logo = ImageTk.PhotoImage(Image.open('resources/logo.png'))
         logoLab = tk.Label(self.window, image=logo)
         logoLab.grid(row=0, columnspan=2, padx=(20, 20), pady=(10, 60))
 
@@ -44,7 +44,7 @@ class MainWindow:
         chatTitleField.grid(row=2, column=1, sticky=tk.W, padx=(10, 10), pady=(10, 10), ipady=3)
 
         # enter button
-        buttonImage = ImageTk.PhotoImage(Image.open('enter_button.png'))
+        buttonImage = ImageTk.PhotoImage(Image.open('resources/enter_button.png'))
         enterButton = tk.Button(self.window, command=self.enter)
         enterButton.config(image=buttonImage, highlightthickness=0, bd=0)
         enterButton.grid(row=3, columnspan=2, pady=(40, 20))

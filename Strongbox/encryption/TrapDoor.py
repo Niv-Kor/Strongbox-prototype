@@ -1,4 +1,4 @@
-import NumeralHandler as nums
+import Strongbox.util.NumeralHandler as nums
 import random
 
 

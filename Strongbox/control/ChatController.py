@@ -1,7 +1,6 @@
 from threading import Thread
-import ServerConstants as servconst
-import Codec
-import Composer
+from Strongbox.server import ServerConstants as servconst
+from Strongbox.encryption import Codec, Composer
 
 
 class ChatController:

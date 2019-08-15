@@ -1,6 +1,6 @@
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
-import ServerConstants as servconst
+from Strongbox.server import ServerConstants as servconst
 
 
 class Protocol:
@@ -23,7 +23,7 @@ class Protocol:
         try:
             self.clientSocket.send(bytes(msg))
         except (IOError, AttributeError):
-            print 'Could not send the message:', msg
+            print 'Could not send the message', msg
 
     # receive a message from either the server or the other client
     def receive(self):
