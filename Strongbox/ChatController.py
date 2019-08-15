@@ -19,9 +19,7 @@ class ChatController:
         receiveThread.start()
 
         headerMsg = ['', self.profile.door.getPublicKey(), self.profile.name]
-        self.protocol.send(headerMsg)
-
-        # self.window.run()
+        self.protocol.send(servconst.HEADER_REQUEST_MESSAGE + bytes(headerMsg))
 
     # receive a message from either the server or the other client
     def receive(self):

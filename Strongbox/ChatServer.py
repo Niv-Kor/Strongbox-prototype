@@ -28,18 +28,23 @@ class ChatServer:
         return self.clientCount() == servconst.CHAT_BACKLOG
 
     def handleClient(self, client):
-        # if this is the second person to enter the chat,
-        # send him the public key from the buffer
-        if len(self.headerBuffer) > 0:
-            headerTop = self.headerBuffer.pop()
-            self.headerBuffer.add(headerTop)
-            client.send(headerTop)
-
         while True:
             msg = client.recv(servconst.BUFFER_SIZE)
 
+            # received a header message from the client
+            # containing his opening public key
+            if msg == servconst.HEADER_REQUEST_MESSAGE:
+                # if this is the second person to enter the chat,
+                # send him the public key from the buffer
+                if len(self.headerBuffer) > 0:
+                    headerTop = self.headerBuffer.pop()
+                    self.headerBuffer.add(headerTop)
+                    client.send(headerTop)
+
+                # broadcast the header message
+                self.broadcast(client, msg[len(servconst.HEADER_REQUEST_MESSAGE):])
             # received quit message
-            if msg == servconst.QUIT_MESSAGE:
+            elif msg == servconst.QUIT_MESSAGE:
                 self.kick(client)
                 self.broadcast(client, str(self.clients[client]) + ' has left the chat.')
                 break

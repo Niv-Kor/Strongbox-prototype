@@ -11,6 +11,7 @@ SERVER.bind(ADDRESS)
 
 clients = {}
 addresses = {}
+searching = {}
 chats = {}
 
 
@@ -31,6 +32,7 @@ def accept():
         # client.send(bytes(welcomeMessage))
 
         addresses[client] = clientAddress
+        searching[client] = True
         handlingThread = Thread(target=handleClient, args=(client,))
         handlingThread.start()
 
@@ -41,7 +43,7 @@ def handleClient(client):
     # in order to be capable of receiving the next messages
     client.send(bytes('<DUMMY IGNITION MESSAGE>'))
 
-    while True:
+    while searching[client]:
         msg = client.recv(servconst.BUFFER_SIZE)
         print 'received:', msg
 
@@ -57,9 +59,9 @@ def handleClient(client):
             else:
                 if chatTitle not in chats:
                     chats[chatTitle] = ChatServer(chatTitle)
-                elif not chats[chatTitle].ifFull():
-                    chats[chatTitle].invite(client)
 
+                chats[chatTitle].invite((client, request[0]))
+                searching[client] = False
                 approvalMsg = [chatTitle, True]
                 client.send(str(approvalMsg))
                 print 'sent approval as', approvalMsg

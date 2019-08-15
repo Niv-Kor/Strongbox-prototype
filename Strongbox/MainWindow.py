@@ -3,7 +3,6 @@ from PIL import Image, ImageTk
 from ChatWindow import ChatWindow
 from UserProfile import UserProfile as user
 from ChatController import ChatController
-from threading import Thread
 import StringHandler as sthand
 import tkinter as tk
 
@@ -82,7 +81,7 @@ class MainWindow:
                 if msg[0] == self.chatTitleBuffer.get() and msg[1] == str(True):
                     print 'Approved'
                     chatWindow = ChatWindow()
-                    controller = ChatController(user)
+                    controller = ChatController(self.user)
                     controller.connect(self.protocol, chatWindow)
             except Exception:
                 pass
