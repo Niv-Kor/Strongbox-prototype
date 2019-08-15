@@ -19,7 +19,7 @@ chats = {}
 def accept():
     while True:
         (client, clientAddress) = SERVER.accept()
-        print '>>>', clientAddress, 'has connected. socket', client
+        print '>>>', clientAddress, 'has connected the server.'
 
         welcomeMessage = servconst.WELCOME_MESSAGE
 
@@ -45,26 +45,38 @@ def handleClient(client):
 
     while searching[client]:
         msg = client.recv(servconst.BUFFER_SIZE)
-        print 'received:', msg
 
         if msg.startswith(servconst.CHAT_REQUEST_MESSAGE):
             request = _extractChatRequest(msg)
             chatTitle = request[1]
-            print 'request is:', request
+            print '>>> Received request:', msg
 
             if chatTitle in chats and chats[chatTitle].isFull():
                 approvalMsg = [chatTitle, False]
                 client.send(str(approvalMsg))
-                print 'sent approval as', approvalMsg
+
+                printChatCapacity(chats[chatTitle])
+                print '>>> Request not approved.'
             else:
                 if chatTitle not in chats:
                     chats[chatTitle] = ChatServer(chatTitle)
+                    print '>>> Created new chat \'{}\''.format(request[1])
+
+                printChatCapacity(chats[chatTitle])
+                print '>>> Request approved.'
 
                 chats[chatTitle].invite((client, request[0]))
                 searching[client] = False
                 approvalMsg = [chatTitle, True]
                 client.send(str(approvalMsg))
-                print 'sent approval as', approvalMsg
+
+
+
+
+def printChatCapacity(chat):
+    title = chat.title
+    capacity = '{}/{}'.format(chat.clientCount(), servconst.CHAT_BACKLOG)
+    print '>>> The chat \'{}\' contains {} clients.'.format(title, capacity)
 
 
 def terminateEmptyChats():
@@ -86,15 +98,8 @@ def removeChat(chatServer):
 
 def _extractChatRequest(req):
     req = req[len(servconst.CHAT_REQUEST_MESSAGE):]
-
-    print 'in extract req now:', req
-
     clientName = req[sthand.nthIndex(req, '\'', 0) + 1:sthand.nthIndex(req, '\'', 1)]
     chatTitle = req[sthand.nthIndex(req, '\'', 2) + 1:sthand.nthIndex(req, '\'', 3)]
-
-    print 'in extract name:', clientName
-    print 'in extract title:', chatTitle
-
     return [clientName, chatTitle]
 
 

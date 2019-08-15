@@ -53,38 +53,33 @@ class MainWindow:
         # receiveThread.start()
         self.window.mainloop()
 
-    def generate_new_window(self):
-        print 'a'
-        wind = tk.Toplevel()
-        print 'b'
-        label = tk.Label(wind, text="a generic Toplevel window")
-        label.pack()
-
     def enter(self):
         name = self.nameBuffer.get()
         title = self.chatTitleBuffer.get()
 
         # verify inputs
         if name != '' and name.replace(' ', '').isalpha() and title != '':
-            print 'entered'
             self.user = user(name)
             msg = servconst.CHAT_REQUEST_MESSAGE + str([name, title])
             self.protocol.send(msg)
 
+            # wait for response from server
             msg = self.protocol.receive()
-            print 'received approval:', msg
 
             try:
                 msg = self._extractChatApproval(msg)
-                print 'received approval after try:', msg
 
                 if msg[0] == self.chatTitleBuffer.get() and msg[1] == str(True):
-                    print 'Approved'
+                    print 'Chat {} approved.'.format(title)
                     chatWindow = ChatWindow()
                     controller = ChatController(self.user)
                     controller.connect(self.protocol, chatWindow)
+                else:
+                    print 'Chat {} is full.'.format(title)
             except Exception:
                 pass
+        else:
+            print 'Inputs not approved.'
 
     def _extractChatApproval(self, msg):
         title = msg[sthand.nthIndex(msg, '\'', 0) + 1:sthand.nthIndex(msg, '\'', 1)]

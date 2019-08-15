@@ -24,8 +24,8 @@ class ChatController:
     # receive a message from either the server or the other client
     def receive(self):
         while True:
-            print 'waiting for data'
             msg = self.protocol.receive()
+            self.window.enableButton(True)
             print 'received', msg
 
             if not type(msg) is None and not msg == servconst.QUIT_MESSAGE:
@@ -53,6 +53,7 @@ class ChatController:
         else:
             msg = Composer.compose(msg, self.profile)
             self.protocol.send(msg)
+            self.window.enableButton(False)
 
         self.window.clearBuffer()
 

@@ -4,8 +4,8 @@ import StringHandler as sthand
 
 
 class ChatServer:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, title):
+        self.title = title
         self.clients = {}
 
         # store the public key of the first person to enter the chat
@@ -33,7 +33,7 @@ class ChatServer:
 
             # received a header message from the client
             # containing his opening public key
-            if msg == servconst.HEADER_REQUEST_MESSAGE:
+            if msg.startswith(servconst.HEADER_REQUEST_MESSAGE):
                 # if this is the second person to enter the chat,
                 # send him the public key from the buffer
                 if len(self.headerBuffer) > 0:
