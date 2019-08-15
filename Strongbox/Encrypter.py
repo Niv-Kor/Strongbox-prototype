@@ -11,7 +11,9 @@ def encrypt(secret, trapdoor):
     maxDigits = 1
     encList = []
 
-    if secret != '':
+    print 'secret is', secret
+
+    if len(secret) > 0:
         # encrypt all items in secret
         for i in range(len(secret)):
             secret[i] = (int(secret[i]) ** trapdoor.encrypterKey[1]) % trapdoor.encrypterKey[0]
@@ -27,6 +29,8 @@ def encrypt(secret, trapdoor):
         # insert header info
         string = nums.zeroPadding(maxDigits, 3) + string
         encList.append(string)
+    else:
+        encList.append('')
 
     # insert new public key
     encList.append(trapdoor.getPublicKey())

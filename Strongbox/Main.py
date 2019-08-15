@@ -1,11 +1,9 @@
-import ChatController
-import UserProfile
-import ChatWindow
-import Protocol
+from Protocol import Protocol
+from MainWindow import MainWindow
 
 
-user = UserProfile.UserProfile('Niv', '10.100.102.8', 40022)
-controller = ChatController.ChatController(user)
-protocol = Protocol.Protocol()
-window = ChatWindow.ChatWindow()
-controller.connect(protocol, window)
+protocol = Protocol()
+protocol.bind()
+mainWindow = MainWindow(protocol)
+
+

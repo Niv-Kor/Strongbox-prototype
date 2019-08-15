@@ -15,14 +15,13 @@ class ChatController:
         self.protocol = protocol
         self.window = window
         self.window.connectController(self)
-        self.protocol.bind()
         receiveThread = Thread(target=self.receive)
         receiveThread.start()
 
         headerMsg = ['', self.profile.door.getPublicKey(), self.profile.name]
         self.protocol.send(headerMsg)
 
-        self.window.run()
+        # self.window.run()
 
     # receive a message from either the server or the other client
     def receive(self):
@@ -38,10 +37,10 @@ class ChatController:
                 # encrypted message from other client
                 else:
                     msg = Composer.decompose(msg, self.profile)
-                    self.profile.door.regenerate()
 
                     # message is not empty
                     if msg[len(msg) - 2] != ':' or msg.count(':') > 1:
+                        self.profile.door.regenerate()
                         self.window.append(msg)
                         self.send('')
             else:  # client has possibly left the chat
