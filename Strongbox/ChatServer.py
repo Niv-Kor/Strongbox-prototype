@@ -1,6 +1,6 @@
 import ServerConstants as servconst
 from threading import Thread
-import StringHandler as sthand
+import MessageConverter as mesconv
 
 
 class ChatServer:
@@ -54,7 +54,7 @@ class ChatServer:
     # Broadcast a message to all connected clients except the sender
     def broadcast(self, sender, msg):
         # store the message in the buffer
-        if self._isHeader(msg):
+        if mesconv.isHeader(msg):
             self.headerBuffer.clear()
             self.headerBuffer.add(msg)
 
@@ -62,8 +62,3 @@ class ChatServer:
         for sock in self.clients:
             if sock != sender:
                 sock.send(bytes(msg))
-
-    # Check if a message is a header, which contains an empty string with crucial encryption info
-    def _isHeader(self, msg):
-        encryptedNum = str(msg[sthand.nthIndex(msg, '\'', 0) + 1:sthand.nthIndex(msg, '\'', 1)])
-        return encryptedNum == ''

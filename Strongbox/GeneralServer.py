@@ -1,6 +1,6 @@
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
-import StringHandler as sthand
+import MessageConverter as mesconv
 import ServerConstants as servconst
 from ChatServer import ChatServer
 
@@ -47,7 +47,7 @@ def handleClient(client):
         msg = client.recv(servconst.BUFFER_SIZE)
 
         if msg.startswith(servconst.CHAT_REQUEST_MESSAGE):
-            request = _extractChatRequest(msg)
+            request = mesconv.extractChatRequest(msg)
             chatTitle = request[1]
             print '>>> Received request:', msg
 
@@ -71,8 +71,6 @@ def handleClient(client):
                 client.send(str(approvalMsg))
 
 
-
-
 def printChatCapacity(chat):
     title = chat.title
     capacity = '{}/{}'.format(chat.clientCount(), servconst.CHAT_BACKLOG)
@@ -94,13 +92,6 @@ def terminateEmptyChats():
 
 def removeChat(chatServer):
     del chats[chatServer.name]
-
-
-def _extractChatRequest(req):
-    req = req[len(servconst.CHAT_REQUEST_MESSAGE):]
-    clientName = req[sthand.nthIndex(req, '\'', 0) + 1:sthand.nthIndex(req, '\'', 1)]
-    chatTitle = req[sthand.nthIndex(req, '\'', 2) + 1:sthand.nthIndex(req, '\'', 3)]
-    return [clientName, chatTitle]
 
 
 SERVER.listen(servconst.APP_BACKLOG)

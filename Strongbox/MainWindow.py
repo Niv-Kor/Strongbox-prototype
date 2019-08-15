@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 from ChatWindow import ChatWindow
 from UserProfile import UserProfile as user
 from ChatController import ChatController
-import StringHandler as sthand
+import MessageConverter as mesconv
 import tkinter as tk
 
 
@@ -67,7 +67,7 @@ class MainWindow:
             msg = self.protocol.receive()
 
             try:
-                msg = self._extractChatApproval(msg)
+                msg = mesconv.extractChatApproval(msg)
 
                 if msg[0] == self.chatTitleBuffer.get() and msg[1] == str(True):
                     print 'Chat {} approved.'.format(title)
@@ -80,12 +80,3 @@ class MainWindow:
                 pass
         else:
             print 'Inputs not approved.'
-
-    def _extractChatApproval(self, msg):
-        title = msg[sthand.nthIndex(msg, '\'', 0) + 1:sthand.nthIndex(msg, '\'', 1)]
-        approval = msg[sthand.nthIndex(msg, ',', 0) + 2:sthand.nthIndex(msg, ']', 0)]
-        return [title, approval]
-
-
-
-
